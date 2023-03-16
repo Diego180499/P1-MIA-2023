@@ -31,4 +31,18 @@ public class BranchService {
         return branchDTO;
     }
 
+    public void incrementStock(int id, int amount){
+        Integer actualStock = branchCrud.getStock(id);
+        Branch branch = branchCrud.findById(id).get();
+        branch.setProductsAmount(actualStock+amount);
+        branchCrud.save(branch);
+    }
+
+    public void reduceStock(int id, int amount){
+        Integer actualStock = branchCrud.getStock(id);
+        Branch branch = branchCrud.findById(id).get();
+        branch.setProductsAmount(actualStock-amount);
+        branchCrud.save(branch);
+    }
+
 }

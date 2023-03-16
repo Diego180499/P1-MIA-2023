@@ -22,12 +22,22 @@ public class ProductBranchService {
     BranchService branchService;
 
     public void addProductBranch(NewProductBranchDTO newProductBranch){
-        ProductBranch productBranch = new ProductBranch();
-        productBranch.setProductBranchId(newProductBranch.getProduct()+"-"+newProductBranch.getBranch());
-        productBranch.setProduct(newProductBranch.getProduct());
-        productBranch.setBranch(newProductBranch.getBranch());
-        productBranch.setStockAmount(newProductBranch.getStockAmount());
+        String productBranchId = newProductBranch.getProduct()+"-"+newProductBranch.getBranch();
+        ProductBranch productBranch;
 
+        if(!productBranchCrud.existsById(productBranchId)){
+            productBranch = new ProductBranch();
+            productBranch.setProductBranchId(productBranchId);
+            productBranch.setProduct(newProductBranch.getProduct());
+            productBranch.setBranch(newProductBranch.getBranch());
+            productBranch.setStockAmount(newProductBranch.getStockAmount());
+        }else{
+            productBranch = productBranchCrud.findById(productBranchId).get();
+            Integer actualStock = this.getStock(productBranchId);
+            productBranch.setStockAmount(actualStock+newProductBranch.getStockAmount());
+        }
+
+        branchService.incrementStock(productBranch.getBranch(),newProductBranch.getStockAmount());
         productBranchCrud.save(productBranch);
     }
 
@@ -46,6 +56,15 @@ public class ProductBranchService {
         return productBranchDTO;
     }
 
+    public Integer getStock(String id){
+        return  productBranchCrud.getStock(id);
+    }
 
+    public void reduceStock(String id, int amount){
+        int actualStock = getStock(id);
+        ProductBranch productBranch = productBranchCrud.findById(id).get();
+        productBranch.setStockAmount(actualStock-amount);
+        productBranchCrud.save(productBranch);
+    }
 
 }

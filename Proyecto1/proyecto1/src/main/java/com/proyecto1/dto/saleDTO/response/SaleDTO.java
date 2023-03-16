@@ -1,35 +1,22 @@
-package com.proyecto1.repository.entity;
+package com.proyecto1.dto.saleDTO.response;
+
+import com.proyecto1.dto.branchDTO.response.BranchDTO;
+import com.proyecto1.dto.clientDTO.response.ClientDTO;
+import com.proyecto1.dto.employeeDTO.response.EmployeeDTO;
 
 
-import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 
-@Entity
-@Table(name = "venta")
-public class Sale {
+public class SaleDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_venta")
     private Integer saleId;
-
-    @Column(name = "empleado")
-    private String employee;
-
-    @Column(name = "cliente")
-    private String client;
-
-    @Column(name = "fecha_venta")
+    private EmployeeDTO employee;
+    private ClientDTO client;
     private Date saleDate;
-
-    @Column(name = "sucursal")
-    private Integer branch;
-
+    private BranchDTO branch;
     private  Integer total;
 
-    /*Getters and Setters*/
+    /* Getters and Setters */
 
     public Integer getSaleId() {
         return saleId;
@@ -39,19 +26,19 @@ public class Sale {
         this.saleId = saleId;
     }
 
-    public String getEmployee() {
+    public EmployeeDTO getEmployee() {
         return employee;
     }
 
-    public void setEmployee(String employee) {
+    public void setEmployee(EmployeeDTO employee) {
         this.employee = employee;
     }
 
-    public String getClient() {
+    public ClientDTO getClient() {
         return client;
     }
 
-    public void setClient(String client) {
+    public void setClient(ClientDTO client) {
         this.client = client;
     }
 
@@ -63,11 +50,11 @@ public class Sale {
         this.saleDate = saleDate;
     }
 
-    public Integer getBranch() {
+    public BranchDTO getBranch() {
         return branch;
     }
 
-    public void setBranch(Integer branch) {
+    public void setBranch(BranchDTO branch) {
         this.branch = branch;
     }
 

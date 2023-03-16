@@ -48,6 +48,18 @@ public class ClientService {
         return clientDTO;
     }
 
+    public ClientDTO getClientById(String clientNit){
+        Client client = clientCrud.findById(clientNit).get();
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setNit(client.getNit());
+        clientDTO.setName(client.getName());
+        clientDTO.setLastName(client.getLastName());
+        clientDTO.setAddress(client.getAddress());
+        clientDTO.setPhone(client.getPhone());
+
+        return clientDTO;
+    }
+
     public NewClientDTO modifyClient(NewClientDTO newClient, String nit){
         Client client = clientCrud.findById(nit).get();
         client.setName(newClient.getName());

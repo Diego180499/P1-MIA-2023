@@ -82,7 +82,13 @@ public class ProductService {
         return productDTO;
     }
 
-
+    public Integer getPrice(int id){
+        if(productCrud.existsById(id)){
+            int price = productCrud.findById(id).get().getPrice();
+            return price;
+        }
+        return 0;
+    }
 
 
 }
