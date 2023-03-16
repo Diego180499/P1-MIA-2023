@@ -4,9 +4,12 @@ package com.proyecto1.service;
 import com.proyecto1.dto.clientDTO.request.ClientIdDTO;
 import com.proyecto1.dto.clientDTO.request.NewClientDTO;
 import com.proyecto1.dto.clientDTO.response.ClientDTO;
+import com.proyecto1.dto.exceptionDTO.MarketExceptionDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.ClientCrud;
 import com.proyecto1.repository.entity.Client;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +26,10 @@ public class ClientService {
         return clients;
     }
 
-    public void saveClient(NewClientDTO newClient){
+    public void saveClient(NewClientDTO newClient) throws MarketException {
+        if(clientCrud.existsById(newClient.getNit())){
+            throw new MarketException("El cliente con el nit "+newClient.getNit()+" ya ha sido registrado",400);
+        }
         Client client = new Client();
 
         client.setNit(newClient.getNit());
@@ -36,8 +42,11 @@ public class ClientService {
     }
 
 
-    public ClientDTO getClientByNit(ClientIdDTO clientNit){
-        Client client = clientCrud.findById(clientNit.getNit()).get();
+    public ClientDTO getClientByNit(String nit) throws MarketException {
+        if(!clientCrud.existsById(nit)){
+            throw new MarketException("El cliente con el nit "+nit+" no existe",404);
+        }
+        Client client = clientCrud.findById(nit).get();
         ClientDTO clientDTO = new ClientDTO();
         clientDTO.setNit(client.getNit());
         clientDTO.setName(client.getName());
@@ -48,7 +57,11 @@ public class ClientService {
         return clientDTO;
     }
 
-    public ClientDTO getClientById(String clientNit){
+    public ClientDTO getClientById(String clientNit) throws MarketException {
+        if(!clientCrud.existsById(clientNit)){
+            throw new MarketException("El cliente con el nit "+clientNit+" no existe",404);
+        }
+
         Client client = clientCrud.findById(clientNit).get();
         ClientDTO clientDTO = new ClientDTO();
         clientDTO.setNit(client.getNit());
@@ -60,7 +73,11 @@ public class ClientService {
         return clientDTO;
     }
 
-    public NewClientDTO modifyClient(NewClientDTO newClient, String nit){
+    public NewClientDTO modifyClient(NewClientDTO newClient, String nit) throws MarketException {
+        if(!clientCrud.existsById(nit)){
+            throw new MarketException("El cliente con el nit "+nit+" no existe",404);
+        }
+
         Client client = clientCrud.findById(nit).get();
         client.setName(newClient.getName());
         client.setLastName(newClient.getLastName());
@@ -72,7 +89,9 @@ public class ClientService {
     }
 
 
-
+    public Boolean exist(String nit){
+        return clientCrud.existsById(nit);
+    }
 
 
 

@@ -4,6 +4,7 @@ package com.proyecto1.service;
 import com.proyecto1.dto.categoryDTO.response.ProductCategoryDTO;
 import com.proyecto1.dto.productDTO.request.NewProductDTO;
 import com.proyecto1.dto.productDTO.response.ProductDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.ProductCategoryCrud;
 import com.proyecto1.repository.crud.ProductCrud;
 import com.proyecto1.repository.entity.Product;
@@ -24,7 +25,12 @@ public class ProductService {
     private ProductCategoryService productCategoryService;
 
 
-    public ProductDTO addProduct(NewProductDTO newProduct){
+    public ProductDTO addProduct(NewProductDTO newProduct) throws MarketException {
+
+        if(!productCategoryService.exist(newProduct.getCategory())){
+            throw new MarketException("La categoria no existe",400);
+        }
+
         Product product = new Product();
         product.setName(newProduct.getName());
         product.setCategory(newProduct.getCategory());
@@ -59,8 +65,10 @@ public class ProductService {
     }
 
 
-    public ProductDTO getById(int id){
-
+    public ProductDTO getById(int id) throws MarketException {
+        if(!productCrud.existsById(id)){
+            throw new MarketException("el producto solicitado no existe",404);
+        }
         Product product = productCrud.findById(id).get();
         ProductCategoryDTO productCategoryDTO = productCategoryService.getById(product.getCategory());
         ProductDTO productDTO = ProductUtils.ProductToProductDTO(product, productCategoryDTO);
@@ -69,7 +77,15 @@ public class ProductService {
     }
 
 
-    public ProductDTO updateProduct(NewProductDTO newProduct , int id){
+    public ProductDTO updateProduct(NewProductDTO newProduct , int id) throws MarketException {
+        if(!productCrud.existsById(id)){
+            throw new MarketException("el producto solicitado no existe",404);
+        }
+
+        if(!productCategoryService.exist(newProduct.getCategory())){
+            throw new MarketException("la categoria no existe",404);
+        }
+
         Product product = productCrud.findById(id).get();
         product.setName(newProduct.getName());
         product.setCategory(newProduct.getCategory());
@@ -82,12 +98,18 @@ public class ProductService {
         return productDTO;
     }
 
-    public Integer getPrice(int id){
-        if(productCrud.existsById(id)){
-            int price = productCrud.findById(id).get().getPrice();
-            return price;
+    public Integer getPrice(int id) throws MarketException {
+        if(!productCrud.existsById(id)){
+            throw new MarketException("el producto solicitado no existe",404);
         }
-        return 0;
+
+        int price = productCrud.findById(id).get().getPrice();
+        return price;
+    }
+
+
+    public Boolean exist(int id){
+        return productCrud.existsById(id);
     }
 
 

@@ -2,6 +2,7 @@ package com.proyecto1.controllers;
 
 
 import com.proyecto1.dto.branchDTO.response.BranchDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.service.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,13 @@ public class BranchController {
 
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<BranchDTO> getById(@PathVariable int id){
-        return new ResponseEntity<>(branchService.getById(id),HttpStatus.OK);
+    public ResponseEntity getById(@PathVariable int id){
+        try {
+            return new ResponseEntity<>(branchService.getById(id),HttpStatus.OK);
+        } catch (MarketException e) {
+            return new ResponseEntity(e.getMarketExceptionDTO(),HttpStatus.NOT_FOUND);
+            //throw new RuntimeException(e);
+        }
     }
 
 }

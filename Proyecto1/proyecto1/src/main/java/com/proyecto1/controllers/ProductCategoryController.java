@@ -24,7 +24,7 @@ public class ProductCategoryController {
         return new ResponseEntity<>(productCategoryService.addProductCategory(category), HttpStatus.CREATED);
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/all")
     public ResponseEntity<ArrayList<ProductCategoryDTO>> getAll(){
         return new ResponseEntity<>(productCategoryService.getAllProductCategory(), HttpStatus.OK);
     }

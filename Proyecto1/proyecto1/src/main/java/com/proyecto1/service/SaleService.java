@@ -6,6 +6,7 @@ import com.proyecto1.dto.clientDTO.response.ClientDTO;
 import com.proyecto1.dto.employeeDTO.response.EmployeeDTO;
 import com.proyecto1.dto.saleDTO.request.NewSaleDTO;
 import com.proyecto1.dto.saleDTO.response.SaleDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.SaleCrud;
 import com.proyecto1.repository.entity.Employee;
 import com.proyecto1.repository.entity.Sale;
@@ -32,8 +33,11 @@ public class SaleService {
     ClientService clientService;
 
 
-    public SaleDTO makeSale(NewSaleDTO newSale){
-        Date saleDate = ProjectUtils.StringToDate(newSale.getSaleDate(),"dd-MM-yyyy");
+    public SaleDTO makeSale(NewSaleDTO newSale) throws MarketException {
+
+        validateData(newSale);
+
+        Date saleDate = ProjectUtils.StringToDate(newSale.getSaleDate(),"dd/MM/yyyy");
         Sale sale = new Sale();
         sale.setEmployee(newSale.getEmployee());
         sale.setClient(newSale.getClient());
@@ -52,7 +56,11 @@ public class SaleService {
     }
 
 
-    public SaleDTO getById(Integer id){
+    public SaleDTO getById(Integer id) throws MarketException {
+        if(!saleCrud.existsById(id)){
+            throw new MarketException("La venta no existe",404);
+        }
+
         Sale sale = saleCrud.findById(id).get();
         EmployeeDTO employeeDTO = employeeService.getByDpi(sale.getEmployee());
         BranchDTO branchDTO = branchService.getById(sale.getBranch());
@@ -60,10 +68,9 @@ public class SaleService {
 
         SaleDTO saleDTO = SaleUtils.SaleToSaleDTO(sale,branchDTO,clientDTO,employeeDTO);
         return saleDTO;
-
     }
 
-    public ArrayList<SaleDTO> getAll(){
+    public ArrayList<SaleDTO> getAll() throws MarketException {
         ArrayList<Sale> sales = (ArrayList) saleCrud.findAll();
         ArrayList<SaleDTO> salesDTO = new ArrayList<>();
         for(Sale sale: sales){
@@ -88,5 +95,26 @@ public class SaleService {
     public Integer getSaleTotal(int id){
             Integer total = saleCrud.getSaleTotal(id);
             return total;
+    }
+
+    public Boolean exist(int id){
+        return saleCrud.existsById(id);
+    }
+
+    //Private methods ***
+    private void validateData(NewSaleDTO newSale) throws MarketException {
+
+        if(!clientService.exist(newSale.getClient())){
+            throw new MarketException("El cliente con el nit '"+newSale.getClient()+"' no existe",404);
+        }
+
+        if(!branchService.exist(newSale.getBranch())){
+            throw new MarketException("La sucursal no existe",404);
+        }
+
+        if(!employeeService.exist(newSale.getEmployee())){
+            throw new MarketException("El empleado con el dpi '"+newSale.getEmployee()+"' no existe",404);
+        }
+
     }
 }

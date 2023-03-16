@@ -14,8 +14,6 @@ public class EmployeeRoleService {
     @Autowired
     private EmployeeRoleCrud employeeRoleCrud;
 
-
-
     public ArrayList<RoleEmployeeDTO> getAll(){
         ArrayList<RoleEmployeeDTO> roles = (ArrayList) employeeRoleCrud.findAll();
         return roles;
@@ -31,7 +29,9 @@ public class EmployeeRoleService {
         return roleEmployeeDTO;
     }
 
-
+    public Boolean exist(int id){
+        return employeeRoleCrud.existsById(id);
+    }
 
 
 }

@@ -5,12 +5,14 @@ import com.proyecto1.dto.branchDTO.response.BranchDTO;
 import com.proyecto1.dto.employeeDTO.request.NewEmployeeDTO;
 import com.proyecto1.dto.employeeDTO.response.EmployeeDTO;
 import com.proyecto1.dto.roleEmployeeDTO.response.RoleEmployeeDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.EmployeeCrud;
 import com.proyecto1.repository.entity.Employee;
 import com.proyecto1.utils.EmployeeUtils;
 import com.proyecto1.utils.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.error.Mark;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,14 +30,13 @@ public class EmployeeService {
     private EmployeeRoleService employeeRoleService;
 
 
-    public void saveEmployee(NewEmployeeDTO newEmployee){
-
+    public void saveEmployee(NewEmployeeDTO newEmployee) throws MarketException {
+        validateData(newEmployee);
         Employee employee = EmployeeUtils.CreateEmployee(newEmployee);
         employeeCrud.save(employee);
     }
 
-
-    public ArrayList<EmployeeDTO> getAll(){
+    public ArrayList<EmployeeDTO> getAll() throws MarketException {
         ArrayList<Employee> employees = (ArrayList) employeeCrud.findAll();
 
         ArrayList<EmployeeDTO> employeesDTO = new ArrayList<>();
@@ -51,7 +52,11 @@ public class EmployeeService {
     }
 
 
-    public EmployeeDTO getByDpi(String dpi){
+    public EmployeeDTO getByDpi(String dpi) throws MarketException {
+        if(!employeeCrud.existsById(dpi)){
+            throw new MarketException("El empleado no existe",404);
+        }
+
         Employee employee = employeeCrud.findById(dpi).get();
 
         BranchDTO branchDTO = branchService.getById(employee.getBranch());
@@ -62,12 +67,36 @@ public class EmployeeService {
     }
 
 
-    public void modifyEmployee(NewEmployeeDTO newEmployee, String dpi){
+    public void modifyEmployee(NewEmployeeDTO newEmployee, String dpi) throws MarketException {
+        if(!employeeCrud.existsById(dpi)){
+            throw new MarketException("El empleado no existe",404);
+        }
+
         Employee employee = EmployeeUtils.CreateEmployee(newEmployee);
 
         employeeCrud.save(employee);
     }
 
+    //Private methods ***
+    private void validateData(NewEmployeeDTO newEmployee) throws MarketException {
+
+        if(employeeCrud.existsById(newEmployee.getDpi())){
+            throw new MarketException("El empleado con el dpi "+newEmployee.getDpi()+" ya ha sido registrado", 400);
+        }
+
+        if(!branchService.exist(newEmployee.getBranch())){
+            throw new MarketException("La sucursal solicitada no existe", 404);
+        }
+
+        if(!employeeRoleService.exist(newEmployee.getRole())){
+            throw new MarketException("El rol solicitado no existe", 404);
+        }
+
+    }
+
+    public Boolean exist(String dpi){
+        return employeeCrud.existsById(dpi);
+    }
 
 
 

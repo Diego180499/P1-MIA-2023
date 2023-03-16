@@ -4,6 +4,7 @@ import com.proyecto1.dto.productDTO.response.ProductDTO;
 import com.proyecto1.dto.saleDTO.response.SaleDTO;
 import com.proyecto1.dto.saleDetailDTO.request.NewSaleDetailDTO;
 import com.proyecto1.dto.saleDetailDTO.response.SaleDetailDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.SaleDetailCrud;
 import com.proyecto1.repository.entity.ProductBranch;
 import com.proyecto1.repository.entity.SaleDetail;
@@ -31,7 +32,10 @@ public class SaleDetailService {
     @Autowired
     BranchService branchService;
 
-    public SaleDetailDTO addSaleDetail(NewSaleDetailDTO newSaleDetail, int branchId){
+
+    public SaleDetailDTO addSaleDetail(NewSaleDetailDTO newSaleDetail, int branchId) throws MarketException {
+
+        validateData(newSaleDetail,branchId);
 
         int productPrice = productService.getPrice(newSaleDetail.getProduct());
         int amount = newSaleDetail.getAmount();
@@ -60,7 +64,7 @@ public class SaleDetailService {
         return saleDetailDTO;
     }
 
-    public ArrayList<SaleDetailDTO> getAll(){
+    public ArrayList<SaleDetailDTO> getAll() throws MarketException {
         ArrayList<SaleDetail> sales = (ArrayList<SaleDetail>) saleDetailCrud.findAll();
         ArrayList<SaleDetailDTO> salesDTO = new ArrayList<>();
 
@@ -71,6 +75,33 @@ public class SaleDetailService {
             salesDTO.add(saleDetailDTO);
         }
         return salesDTO;
+    }
+
+    //private  methods
+    private void validateData(NewSaleDetailDTO newSaleDetail, int branchId) throws MarketException {
+        if(!saleService.exist(newSaleDetail.getSale())){
+            throw new MarketException("La venta a detallar no existe",404);
+        }
+
+        if(!productService.exist(newSaleDetail.getProduct())){
+            throw new MarketException("El producto no existe",404);
+        }
+
+        if(newSaleDetail.getAmount()<0){
+            throw new MarketException("La cantidad a comprar debe ser mayor a 0",400);
+        }
+
+        String productBranchId = newSaleDetail.getProduct()+"-"+branchId;
+
+        if(!productBranchService.exist(productBranchId)){
+            throw new MarketException("El producto no se encuentra registrado en la sucursal",404);
+        }
+
+        if(!productBranchService.isAvailable(productBranchId, newSaleDetail.getAmount())){
+            throw new MarketException("No hay productos suficientes en la sucursal",404);
+        }
+
+
     }
 
 }

@@ -4,10 +4,12 @@ import com.proyecto1.dto.branchDTO.response.BranchDTO;
 import com.proyecto1.dto.productBranchDTO.request.NewProductBranchDTO;
 import com.proyecto1.dto.productBranchDTO.response.ProductBranchDTO;
 import com.proyecto1.dto.productDTO.response.ProductDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.ProductBranchCrud;
 import com.proyecto1.repository.entity.ProductBranch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.error.Mark;
 
 @Service
 public class ProductBranchService {
@@ -21,16 +23,15 @@ public class ProductBranchService {
     @Autowired
     BranchService branchService;
 
-    public void addProductBranch(NewProductBranchDTO newProductBranch){
+    public void addProductBranch(NewProductBranchDTO newProductBranch) throws MarketException {
+        //validamos que la sucursal y producto existan
+        validateData(newProductBranch);
+
         String productBranchId = newProductBranch.getProduct()+"-"+newProductBranch.getBranch();
         ProductBranch productBranch;
 
         if(!productBranchCrud.existsById(productBranchId)){
-            productBranch = new ProductBranch();
-            productBranch.setProductBranchId(productBranchId);
-            productBranch.setProduct(newProductBranch.getProduct());
-            productBranch.setBranch(newProductBranch.getBranch());
-            productBranch.setStockAmount(newProductBranch.getStockAmount());
+            productBranch = createNewProductBranch(productBranchId, newProductBranch);
         }else{
             productBranch = productBranchCrud.findById(productBranchId).get();
             Integer actualStock = this.getStock(productBranchId);
@@ -42,7 +43,10 @@ public class ProductBranchService {
     }
 
 
-    public ProductBranchDTO getProductBranch(String id){
+    public ProductBranchDTO getProductBranch(String id) throws MarketException {
+        if(!productBranchCrud.existsById(id)){
+            throw new MarketException("Eñ producto no existe en la sucursal",404);
+        }
         ProductBranch productBranch = productBranchCrud.findById(id).get();
         ProductDTO productDTO = productService.getById(productBranch.getProduct());
         BranchDTO branchDTO = branchService.getById(productBranch.getBranch());
@@ -65,6 +69,40 @@ public class ProductBranchService {
         ProductBranch productBranch = productBranchCrud.findById(id).get();
         productBranch.setStockAmount(actualStock-amount);
         productBranchCrud.save(productBranch);
+    }
+
+
+    //Private methods******
+    private ProductBranch createNewProductBranch(String id, NewProductBranchDTO newProductBranch){
+        ProductBranch productBranch = new ProductBranch();
+        productBranch.setProductBranchId(id);
+        productBranch.setProduct(newProductBranch.getProduct());
+        productBranch.setBranch(newProductBranch.getBranch());
+        productBranch.setStockAmount(newProductBranch.getStockAmount());
+        return productBranch;
+    }
+
+    private void validateData(NewProductBranchDTO newProductBranch) throws MarketException {
+        if(!productService.exist(newProductBranch.getProduct())){
+            throw new MarketException("El producto no existe",404);
+        }
+
+        if(!branchService.exist(newProductBranch.getBranch())){
+            throw new MarketException("La sucursal no existe",404);
+        }
+    }
+
+
+    public Boolean exist(String id){
+        return productBranchCrud.existsById(id);
+    }
+
+    public Boolean isAvailable(String productBranchdId, int amount) throws MarketException {
+        ProductBranchDTO productBranch = getProductBranch(productBranchdId);
+        if(productBranch.getStockAmount()< amount){
+            return false;
+        }
+        return true;
     }
 
 }

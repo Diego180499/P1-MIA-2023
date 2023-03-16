@@ -54,5 +54,9 @@ public class ProductCategoryService {
         return productCategoryDTO;
     }
 
+    public Boolean exist(int id){
+        return productCategoryCrud.existsById(id);
+    }
+
 
 }

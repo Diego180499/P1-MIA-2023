@@ -2,6 +2,7 @@ package com.proyecto1.controllers;
 
 import com.proyecto1.dto.productDTO.request.NewProductDTO;
 import com.proyecto1.dto.productDTO.response.ProductDTO;
+import com.proyecto1.exception.MarketException;
 import com.proyecto1.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,11 @@ public class ProductController {
 
     @PostMapping("/save")
     public ResponseEntity<ProductDTO> saveProduct(@RequestBody NewProductDTO newProduct){
-        return new ResponseEntity<>(productService.addProduct(newProduct), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(productService.addProduct(newProduct), HttpStatus.CREATED);
+        } catch (MarketException e) {
+            return new ResponseEntity(e.getMarketExceptionDTO(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/all")
@@ -29,12 +34,20 @@ public class ProductController {
 
     @GetMapping("/find/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable int id){
-        return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
+        } catch (MarketException e) {
+            return new ResponseEntity(e.getMarketExceptionDTO(),HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/modify/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody NewProductDTO newProduct, @PathVariable int id){
-        return new ResponseEntity<>(productService.updateProduct(newProduct,id),HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(productService.updateProduct(newProduct,id),HttpStatus.CREATED);
+        } catch (MarketException e) {
+            return new ResponseEntity(e.getMarketExceptionDTO(),HttpStatus.NOT_FOUND);
+        }
     }
 
 }
