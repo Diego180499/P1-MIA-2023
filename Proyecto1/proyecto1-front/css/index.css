@@ -1,0 +1,73 @@
+body{
+    margin: 0;
+    display: flex;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+
+.login{
+    width: 40%;
+    justify-content: center;
+    background-color: transparent;
+    margin: auto;
+}
+h1{
+    color: white;
+    text-align: center;
+}
+
+.formulario{
+    display: grid;
+    grid-template-columns: auto;
+    gap: 2rem;
+    width: 95%;
+    background-color: white;
+    color: black;
+    margin: auto;
+    border-radius: 5%;
+    padding: 2rem;
+}
+
+label{
+    color: black;
+    font-size: 1.7rem;
+}
+
+input{
+    color: black;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    font-size: 1.6rem;
+}
+
+.btn{
+    width: 65%;
+    margin: auto;
+    height: 3rem;
+    background-color: rgb(62, 200, 17);
+    border: none;
+    color: black;
+    font-size: 1.2rem;
+    transition: 0.8s;
+}
+
+.btn:hover{
+    background-color: darkgreen;
+    color: white;
+}
+
+
+a{
+    color: white;
+}
+
+
+.contenido-principal{
+    width: 100%;
+    background-image: url("../imagenes/fondo-colorido-3.jpg");
+    height: 60rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}

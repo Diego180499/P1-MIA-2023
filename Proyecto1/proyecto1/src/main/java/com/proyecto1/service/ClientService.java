@@ -26,7 +26,7 @@ public class ClientService {
         return clients;
     }
 
-    public void saveClient(NewClientDTO newClient) throws MarketException {
+    public ClientDTO saveClient(NewClientDTO newClient) throws MarketException {
         if(clientCrud.existsById(newClient.getNit())){
             throw new MarketException("El cliente con el nit "+newClient.getNit()+" ya ha sido registrado",400);
         }
@@ -38,7 +38,14 @@ public class ClientService {
         client.setAddress(newClient.getAddress());
         client.setPhone(newClient.getPhone());
 
-        clientCrud.save(client);
+        client = clientCrud.save(client);
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setNit(client.getNit());
+        clientDTO.setName(client.getName());
+        clientDTO.setLastName(client.getLastName());
+        clientDTO.setAddress(client.getAddress());
+        clientDTO.setPhone(client.getPhone());
+        return clientDTO;
     }
 
 

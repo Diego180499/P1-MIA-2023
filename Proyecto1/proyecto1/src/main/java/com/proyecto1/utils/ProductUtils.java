@@ -9,7 +9,7 @@ public class ProductUtils {
 
     public static ProductDTO ProductToProductDTO(Product product, ProductCategoryDTO productCategoryDTO){
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setPorductId(product.getProductId());
+        productDTO.setProductId(product.getProductId());
         productDTO.setName(product.getName());
         productDTO.setCategory(productCategoryDTO);
         productDTO.setPrice(product.getPrice());

@@ -4,11 +4,12 @@ import com.proyecto1.repository.entity.ProductBranch;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.ArrayList;
+
 public interface ProductBranchCrud extends CrudRepository<ProductBranch, String> {
 
-    //modificar el stock de un producto en una sucursal
-    @Query(value = "UPDATE producto_sucursal SET cantidad_stock = ? WHERE id_producto_sucursal = ? ;",nativeQuery = true)
-    public void modifyStock(int stock, String productBranchId);
+    @Query(value = "SELECT * FROM producto_sucursal WHERE sucursal = ?;",nativeQuery = true)
+    ArrayList<ProductBranch> getBySucursal(int idSucursal);
 
 
     //obtener el stock

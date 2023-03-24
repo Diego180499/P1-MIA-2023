@@ -4,17 +4,17 @@ import com.proyecto1.dto.categoryDTO.response.ProductCategoryDTO;
 
 public class ProductDTO {
 
-    private Integer porductId;
+    private Integer productId;
     private String name;
     private ProductCategoryDTO category;
     private Integer price;
 
-    public Integer getPorductId() {
-        return porductId;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setPorductId(Integer porductId) {
-        this.porductId = porductId;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getName() {

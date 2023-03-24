@@ -3,6 +3,7 @@ package com.proyecto1.service;
 
 import com.proyecto1.dto.branchDTO.response.BranchDTO;
 import com.proyecto1.dto.employeeDTO.request.NewEmployeeDTO;
+import com.proyecto1.dto.employeeDTO.response.EmployeeCreatedDTO;
 import com.proyecto1.dto.employeeDTO.response.EmployeeDTO;
 import com.proyecto1.dto.roleEmployeeDTO.response.RoleEmployeeDTO;
 import com.proyecto1.exception.MarketException;
@@ -30,10 +31,17 @@ public class EmployeeService {
     private EmployeeRoleService employeeRoleService;
 
 
-    public void saveEmployee(NewEmployeeDTO newEmployee) throws MarketException {
+    public EmployeeCreatedDTO saveEmployee(NewEmployeeDTO newEmployee) throws MarketException {
         validateData(newEmployee);
         Employee employee = EmployeeUtils.CreateEmployee(newEmployee);
+        BranchDTO branchDTO = branchService.getById(employee.getBranch());
+        RoleEmployeeDTO roleEmployeeDTO = employeeRoleService.getById(employee.getRole());
+        EmployeeDTO employeeDTO = EmployeeUtils.EmployeeToEmployeeDTO(employee,branchDTO,roleEmployeeDTO);
         employeeCrud.save(employee);
+        EmployeeCreatedDTO employeeCreatedDTO = new EmployeeCreatedDTO();
+        employeeCreatedDTO.setEmployee(employeeDTO);
+        employeeCreatedDTO.setStatus(201);
+        return employeeCreatedDTO;
     }
 
     public ArrayList<EmployeeDTO> getAll() throws MarketException {
@@ -67,14 +75,20 @@ public class EmployeeService {
     }
 
 
-    public void modifyEmployee(NewEmployeeDTO newEmployee, String dpi) throws MarketException {
+    public EmployeeCreatedDTO modifyEmployee(NewEmployeeDTO newEmployee, String dpi) throws MarketException {
         if(!employeeCrud.existsById(dpi)){
             throw new MarketException("El empleado no existe",404);
         }
 
         Employee employee = EmployeeUtils.CreateEmployee(newEmployee);
-
+        BranchDTO branchDTO = branchService.getById(employee.getBranch());
+        RoleEmployeeDTO roleEmployeeDTO = employeeRoleService.getById(employee.getRole());
+        EmployeeDTO employeeDTO = EmployeeUtils.EmployeeToEmployeeDTO(employee,branchDTO,roleEmployeeDTO);
         employeeCrud.save(employee);
+        EmployeeCreatedDTO employeeCreatedDTO = new EmployeeCreatedDTO();
+        employeeCreatedDTO.setEmployee(employeeDTO);
+        employeeCreatedDTO.setStatus(201);
+        return employeeCreatedDTO;
     }
 
     //Private methods ***

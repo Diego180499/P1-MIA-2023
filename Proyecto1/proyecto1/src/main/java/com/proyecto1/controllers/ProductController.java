@@ -1,6 +1,7 @@
 package com.proyecto1.controllers;
 
 import com.proyecto1.dto.productDTO.request.NewProductDTO;
+import com.proyecto1.dto.productDTO.response.ProductCreatedDTO;
 import com.proyecto1.dto.productDTO.response.ProductDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.service.ProductService;
@@ -18,8 +19,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/save")
-    public ResponseEntity<ProductDTO> saveProduct(@RequestBody NewProductDTO newProduct){
+    public ResponseEntity<ProductCreatedDTO> saveProduct(@RequestBody NewProductDTO newProduct){
         try {
             return new ResponseEntity<>(productService.addProduct(newProduct), HttpStatus.CREATED);
         } catch (MarketException e) {
@@ -27,11 +29,13 @@ public class ProductController {
         }
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/all")
     public ResponseEntity<ArrayList<ProductDTO>> getAllProducts(){
         return new ResponseEntity<>(productService.getAll(),HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/find/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable int id){
         try {
@@ -41,6 +45,7 @@ public class ProductController {
         }
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/modify/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody NewProductDTO newProduct, @PathVariable int id){
         try {

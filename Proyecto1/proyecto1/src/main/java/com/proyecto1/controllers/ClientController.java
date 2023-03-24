@@ -19,21 +19,25 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/all")
     public ResponseEntity<ArrayList<ClientDTO>> getAllClients(){
         return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/save")
     public ResponseEntity saveClient(@RequestBody NewClientDTO client){
         try {
-            clientService.saveClient(client);
-            return new ResponseEntity<>("Creado",HttpStatus.CREATED);
+            return new ResponseEntity<>(clientService.saveClient(client),HttpStatus.CREATED);
         } catch (MarketException e) {
             return new ResponseEntity(e.getMarketExceptionDTO(),HttpStatus.BAD_REQUEST);
         }
     }
 
+
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/find/{nit}")
     public ResponseEntity<ClientDTO> getClientByNit(@PathVariable String nit){
         try {
@@ -44,6 +48,7 @@ public class ClientController {
     }
 
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/modify/{nit}")
     public ResponseEntity<NewClientDTO> modifyClient(@RequestBody NewClientDTO client, @PathVariable String nit){
         try {

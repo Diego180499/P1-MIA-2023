@@ -3,12 +3,11 @@ package com.proyecto1.service;
 
 import com.proyecto1.dto.categoryDTO.response.ProductCategoryDTO;
 import com.proyecto1.dto.productDTO.request.NewProductDTO;
+import com.proyecto1.dto.productDTO.response.ProductCreatedDTO;
 import com.proyecto1.dto.productDTO.response.ProductDTO;
 import com.proyecto1.exception.MarketException;
-import com.proyecto1.repository.crud.ProductCategoryCrud;
 import com.proyecto1.repository.crud.ProductCrud;
 import com.proyecto1.repository.entity.Product;
-import com.proyecto1.repository.entity.ProductCategory;
 import com.proyecto1.utils.ProductUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class ProductService {
     private ProductCategoryService productCategoryService;
 
 
-    public ProductDTO addProduct(NewProductDTO newProduct) throws MarketException {
+    public ProductCreatedDTO addProduct(NewProductDTO newProduct) throws MarketException {
 
         if(!productCategoryService.exist(newProduct.getCategory())){
             throw new MarketException("La categoria no existe",400);
@@ -41,11 +40,14 @@ public class ProductService {
 
         ProductCategoryDTO productCategoryDTO = productCategoryService.getById(product.getCategory());
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setPorductId(product.getProductId());
+        productDTO.setProductId(product.getProductId());
         productDTO.setName(product.getName());
         productDTO.setCategory(productCategoryDTO);
         productDTO.setPrice(product.getPrice());
-        return productDTO;
+        ProductCreatedDTO productCreatedDTO = new ProductCreatedDTO();
+        productCreatedDTO.setProduct(productDTO);
+        productCreatedDTO.setStatus(201);
+        return productCreatedDTO;
     }
 
 

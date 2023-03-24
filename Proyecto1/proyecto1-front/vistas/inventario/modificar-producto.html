@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/inventario/form-producto.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="contenido-inicial">
+        <nav class="navegador">
+            <div class="nav-opciones">
+                <a href="./index.html" class="nav-a" id="regresar">Regresar</a>
+            </div>
+        </nav>
+        <div class="nav-h1">
+            <h1>Electronic - Homes</h1>
+            <p>Ingresar Producto Nuevo</p>
+        </div>
+        <form class="formulario" id="form">
+            <div class="contenido-formulario">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" placeholder="Nombre Producto">
+                <label for="category">Categoria</label>
+                <select name="category" id="category" class="category">
+                </select><br>
+                <label for="price">Precio</label>
+                <input type="text" id="price" placeholder="Precio producto">
+                <button type="submit" class="boton" id="btn">Enviar</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="../../js/inventario/modificar-producto.js"></script>
+</html>

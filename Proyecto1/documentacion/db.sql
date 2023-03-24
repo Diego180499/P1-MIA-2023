@@ -73,6 +73,13 @@ CREATE TABLE empleado(
     FOREIGN KEY (rol) REFERENCES rol_empleado(id_rol)
 );
 
+CREATE TABLE usuario(
+    usuario VARCHAR(20) NOT NULL,
+    password VARCHAR(20) NOT NULL,
+    PRIMARY KEY (usuario),
+    FOREIGN KEY (usuario) REFERENCES empleado (dpi)
+);
+
 
 CREATE TABLE venta(
     id_venta   SERIAL NOT NULL,

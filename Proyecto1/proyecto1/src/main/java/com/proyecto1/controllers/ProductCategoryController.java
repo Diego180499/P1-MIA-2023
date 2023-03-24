@@ -19,11 +19,13 @@ public class ProductCategoryController {
     @Autowired
     ProductCategoryService productCategoryService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/add")
     public ResponseEntity<ProductCategoryCreatedDTO> saveProductCategory(@RequestBody NewCategoryDTO category){
         return new ResponseEntity<>(productCategoryService.addProductCategory(category), HttpStatus.CREATED);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/all")
     public ResponseEntity<ArrayList<ProductCategoryDTO>> getAll(){
         return new ResponseEntity<>(productCategoryService.getAllProductCategory(), HttpStatus.OK);

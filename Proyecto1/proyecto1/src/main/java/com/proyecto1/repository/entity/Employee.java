@@ -38,6 +38,8 @@ public class Employee {
     @Column(name = "rol")
     private Integer role;
 
+
+
     /*Getters and Setters*/
 
     public String getDpi() {

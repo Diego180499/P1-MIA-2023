@@ -28,7 +28,7 @@ public class EmployeeUtils {
 
     public static Employee CreateEmployee(NewEmployeeDTO newEmployee){
         Employee employee = new Employee();
-        Date birthDate = ProjectUtils.StringToDate(newEmployee.getBirthDate(),"dd/MM/yyyy");
+        Date birthDate = ProjectUtils.StringToDate(newEmployee.getBirthDate(),"yyyy-MM-dd");
         employee.setDpi(newEmployee.getDpi());
         employee.setName(newEmployee.getName());
         employee.setLastName(newEmployee.getLastName());

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/inventario/form-producto.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="contenido-inicial">
+        <nav class="navegador">
+            <div class="nav-opciones">
+                <a href="#" class="nav-a" id="regresar">Regresar</a>
+            </div>
+        </nav>
+        <div class="nav-h1">
+            <h1>Electronic - Homes</h1>
+            <p>Enviar Producto a Sucursal</p>
+        </div>
+        <form class="formulario" id="form">
+            <div class="contenido-formulario">
+                <label for="producto">Producto</label>
+                <select name="" id="productos"></select>
+                <label for="stock">Cantidad</label>
+                <input type="number" id="stock">
+                <label for="sucursal">Sucursal</label>
+                <select name="sucursal" id="sucursal"></select>
+                <button type="submit" class="boton" id="btn">Enviar</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="../../js/inventario/enviar-producto.js"></script>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/administracion/form-empleado.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="contenido-inicial">
+        <nav class="navegador">
+            <div class="nav-opciones">
+                <a href="#" class="nav-a" id="regresar">Regresar</a>
+            </div>
+        </nav>
+        <div class="nav-h1">
+            <h1>Electronic - Homes</h1>
+            <p>Ingresar Empleado</p>
+        </div>
+        <form class="formulario" id="form">
+            <div class="contenido-formulario">
+                <label>DPI</label><br>
+                <input type="text" id="dpi" placeholder="DPI empleado"><br>
+                <label>Nombre</label><br>
+                <input type="text" id="name" placeholder="Nombre" ><br>
+                <label>Apellido</label><br>
+                <input type="text" id="lastName" placeholder="apellido"><br>
+                <label>Fecha de Nacimiento</label><br>
+                <input type="date" id="birthDate"><br>
+                <label>Teléfono</label><br>
+                <input type="number" id="phone" placeholder="teléfono"><br>
+                <label>Sucursal</label><br>
+                <select name="sucursal" id="branch" class="branch">
+                </select>
+                <label>Salario</label><br>
+                <input type="number" id="salary"><br>
+                <label>Rol</label><br>
+                <select name="rol" id="rol" class="rol">
+                </select>
+                <br>
+                <button type="submit" class="boton" id="btn">Enviar</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="../../js/administracion/ingresarEmpleado.js"></script>
+</html>
