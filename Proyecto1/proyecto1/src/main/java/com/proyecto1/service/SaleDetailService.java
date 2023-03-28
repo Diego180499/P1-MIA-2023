@@ -3,6 +3,7 @@ package com.proyecto1.service;
 import com.proyecto1.dto.productDTO.response.ProductDTO;
 import com.proyecto1.dto.saleDTO.response.SaleDTO;
 import com.proyecto1.dto.saleDetailDTO.request.NewSaleDetailDTO;
+import com.proyecto1.dto.saleDetailDTO.response.SaleDetailCreatedDTO;
 import com.proyecto1.dto.saleDetailDTO.response.SaleDetailDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.SaleDetailCrud;
@@ -33,7 +34,7 @@ public class SaleDetailService {
     BranchService branchService;
 
 
-    public SaleDetailDTO addSaleDetail(NewSaleDetailDTO newSaleDetail, int branchId) throws MarketException {
+    public SaleDetailCreatedDTO addSaleDetail(NewSaleDetailDTO newSaleDetail, int branchId) throws MarketException {
 
         validateData(newSaleDetail,branchId);
 
@@ -61,8 +62,14 @@ public class SaleDetailService {
         ProductDTO productDTO = productService.getById(saleDetail.getProduct());
         SaleDetailDTO saleDetailDTO = SaleDetailUtils.SaleDetailToSaleDetailDTO(saleDetail,saleDTO,productDTO);
 
-        return saleDetailDTO;
+        SaleDetailCreatedDTO saleDetailCreatedDTO = new SaleDetailCreatedDTO();
+        saleDetailCreatedDTO.setSale(saleDetailDTO);
+        saleDetailCreatedDTO.setMessage("Producto agregado a la venta");
+        saleDetailCreatedDTO.setStatus(201);
+        return saleDetailCreatedDTO;
     }
+
+
 
     public ArrayList<SaleDetailDTO> getAll() throws MarketException {
         ArrayList<SaleDetail> sales = (ArrayList<SaleDetail>) saleDetailCrud.findAll();
@@ -79,6 +86,12 @@ public class SaleDetailService {
 
     //private  methods
     private void validateData(NewSaleDetailDTO newSaleDetail, int branchId) throws MarketException {
+        String idProductBranch = newSaleDetail.getProduct()+"-"+branchId;
+
+        if(!productBranchService.isAvailable(idProductBranch,newSaleDetail.getAmount())){
+            throw new MarketException("No hay suficiente producto",400);
+        }
+
         if(!saleService.exist(newSaleDetail.getSale())){
             throw new MarketException("La venta a detallar no existe",404);
         }

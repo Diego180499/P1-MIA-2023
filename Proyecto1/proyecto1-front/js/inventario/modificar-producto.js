@@ -55,8 +55,7 @@ form.addEventListener("submit",(e)=>{
         .then(res => res.json())
         .then(response =>{
             console.log(response);
-            alert("Producto MODIFICADO");
-            window.location.href = "../../vistas/inventario/productos.html?idSucursal="+idSucursal;
+            alert("Producto modificado");
         });
 
 });

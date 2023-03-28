@@ -5,6 +5,7 @@ import com.proyecto1.dto.branchDTO.response.BranchDTO;
 import com.proyecto1.dto.clientDTO.response.ClientDTO;
 import com.proyecto1.dto.employeeDTO.response.EmployeeDTO;
 import com.proyecto1.dto.saleDTO.request.NewSaleDTO;
+import com.proyecto1.dto.saleDTO.response.SaleCreatedDTO;
 import com.proyecto1.dto.saleDTO.response.SaleDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.SaleCrud;
@@ -33,11 +34,11 @@ public class SaleService {
     ClientService clientService;
 
 
-    public SaleDTO makeSale(NewSaleDTO newSale) throws MarketException {
+    public SaleCreatedDTO makeSale(NewSaleDTO newSale) throws MarketException {
 
         validateData(newSale);
 
-        Date saleDate = ProjectUtils.StringToDate(newSale.getSaleDate(),"dd/MM/yyyy");
+        Date saleDate = ProjectUtils.StringToDate(newSale.getSaleDate(),"yyyy-MM-dd");
         Sale sale = new Sale();
         sale.setEmployee(newSale.getEmployee());
         sale.setClient(newSale.getClient());
@@ -52,7 +53,11 @@ public class SaleService {
         ClientDTO clientDTO = clientService.getClientById(sale.getClient());
 
         SaleDTO saleDTO = SaleUtils.SaleToSaleDTO(sale,branchDTO,clientDTO,employeeDTO);
-        return saleDTO;
+        SaleCreatedDTO saleCreatedDTO = new SaleCreatedDTO();
+        saleCreatedDTO.setSale(saleDTO);
+        saleCreatedDTO.setMessage("La venta No. "+saleDTO.getSaleId()+" ha sido creada");
+        saleCreatedDTO.setStatus(200);
+        return saleCreatedDTO;
     }
 
 

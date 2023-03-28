@@ -5,10 +5,13 @@ import com.proyecto1.dto.branchDTO.response.BranchDTO;
 import com.proyecto1.dto.employeeDTO.request.NewEmployeeDTO;
 import com.proyecto1.dto.employeeDTO.response.EmployeeCreatedDTO;
 import com.proyecto1.dto.employeeDTO.response.EmployeeDTO;
+import com.proyecto1.dto.reportsDTO.employeeReportDTO.EmployeeWithMostIncomeDTO;
+import com.proyecto1.dto.reportsDTO.employeeReportDTO.EmployeeWithMostSalesDTO;
 import com.proyecto1.dto.roleEmployeeDTO.response.RoleEmployeeDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.EmployeeCrud;
 import com.proyecto1.repository.entity.Employee;
+import com.proyecto1.utils.EmployeeReportUtils;
 import com.proyecto1.utils.EmployeeUtils;
 import com.proyecto1.utils.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +115,17 @@ public class EmployeeService {
         return employeeCrud.existsById(dpi);
     }
 
+    /*REPORTS*/
+    public ArrayList<EmployeeWithMostSalesDTO> employeeWithMostsales(){
+        ArrayList<String> employees = employeeCrud.employeeWithMostSales();
+        ArrayList<EmployeeWithMostSalesDTO> employeesDTO = EmployeeReportUtils.employeeWithMostSales(employees);
+        return employeesDTO;
+    }
 
+    public ArrayList<EmployeeWithMostIncomeDTO> employeeWithMostIncome(){
+        ArrayList<String> employees = employeeCrud.employeeWithMostIncome();
+        ArrayList<EmployeeWithMostIncomeDTO> employeesDTO = EmployeeReportUtils.employeeWithMostIncome(employees);
+        return employeesDTO;
+    }
 
 }

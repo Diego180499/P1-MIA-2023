@@ -1,6 +1,7 @@
 package com.proyecto1.controllers;
 
 import com.proyecto1.dto.saleDTO.request.NewSaleDTO;
+import com.proyecto1.dto.saleDTO.response.SaleCreatedDTO;
 import com.proyecto1.dto.saleDTO.response.SaleDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.service.SaleService;
@@ -18,8 +19,9 @@ public class SaleController {
     @Autowired
     SaleService saleService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/add")
-    public ResponseEntity<SaleDTO> makeSale(@RequestBody NewSaleDTO newSale){
+    public ResponseEntity<SaleCreatedDTO> makeSale(@RequestBody NewSaleDTO newSale){
         try {
             return new ResponseEntity<>(saleService.makeSale(newSale), HttpStatus.CREATED);
         } catch (MarketException e) {
@@ -27,6 +29,7 @@ public class SaleController {
         }
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/find/{id}")
     public ResponseEntity<SaleDTO> getById(@PathVariable int id){
         try {
@@ -36,6 +39,7 @@ public class SaleController {
         }
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/all")
     public ResponseEntity<ArrayList<SaleDTO>> getAll(){
         try {

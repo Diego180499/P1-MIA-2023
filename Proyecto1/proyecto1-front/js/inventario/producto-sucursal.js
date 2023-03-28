@@ -48,6 +48,7 @@ form.addEventListener("submit",(e)=>{
         .then(res => res.json())
         .then(response =>{
             console.log(response);
+            alert("Producto Agregado");
         })
 });
 

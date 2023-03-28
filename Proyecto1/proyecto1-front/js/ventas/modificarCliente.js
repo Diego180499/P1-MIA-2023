@@ -52,7 +52,7 @@ form.addEventListener('submit',(e)=>{
     .then(response => {
         console.log(response)
         alert("Cliente Modificado");
-        window.location.href="./clientes.html";
+        window.location.href="./clientes.html"+queryRegresar;
     });
 });
 

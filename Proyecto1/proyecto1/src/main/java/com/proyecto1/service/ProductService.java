@@ -5,9 +5,14 @@ import com.proyecto1.dto.categoryDTO.response.ProductCategoryDTO;
 import com.proyecto1.dto.productDTO.request.NewProductDTO;
 import com.proyecto1.dto.productDTO.response.ProductCreatedDTO;
 import com.proyecto1.dto.productDTO.response.ProductDTO;
+import com.proyecto1.dto.reportsDTO.productReportDTO.MostIncomeWithBranchDTO;
+import com.proyecto1.dto.reportsDTO.productReportDTO.MostSelledByBranchDTO;
+import com.proyecto1.dto.reportsDTO.productReportDTO.MostSelledProductDTO;
+import com.proyecto1.dto.reportsDTO.productReportDTO.ProductsWithMostIncomeDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.ProductCrud;
 import com.proyecto1.repository.entity.Product;
+import com.proyecto1.utils.ProductReportsUtils;
 import com.proyecto1.utils.ProductUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -113,6 +118,36 @@ public class ProductService {
     public Boolean exist(int id){
         return productCrud.existsById(id);
     }
+
+
+    /* Reports Area*/
+
+    public ArrayList<MostSelledProductDTO> mostSelledProducts(){
+        ArrayList<String> products = productCrud.mostSelledProducts();
+        ArrayList<MostSelledProductDTO> productsDTO = ProductReportsUtils.mostSelledProductDTO(products);
+        return productsDTO;
+    }
+
+    public ArrayList<ProductsWithMostIncomeDTO> productsWithMostIncome(){
+        ArrayList<String> products = productCrud.productsWithMostIncome();
+        ArrayList<ProductsWithMostIncomeDTO> productsDTO = ProductReportsUtils.productsWithMostIncome(products);
+        return productsDTO;
+    }
+
+
+    public ArrayList<MostSelledByBranchDTO> mostSelledByBranch(int idSucursal){
+        ArrayList<String> products = productCrud.mostSelledProductsByBranch(idSucursal);
+        ArrayList<MostSelledByBranchDTO> mostSelledByBranchDTOS = ProductReportsUtils.mostSelledByBranch(products);
+        return mostSelledByBranchDTOS;
+    }
+
+    public ArrayList<MostIncomeWithBranchDTO> mostIncomebySucursal(int idSucursal){
+        ArrayList<String> products = productCrud.productsWithMostIncomebySucursal(idSucursal);
+        ArrayList<MostIncomeWithBranchDTO> productsDTO = ProductReportsUtils.mostIncomeByBranch(products);
+        return productsDTO;
+    }
+
+
 
 
 }

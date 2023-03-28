@@ -5,9 +5,11 @@ import com.proyecto1.dto.clientDTO.request.ClientIdDTO;
 import com.proyecto1.dto.clientDTO.request.NewClientDTO;
 import com.proyecto1.dto.clientDTO.response.ClientDTO;
 import com.proyecto1.dto.exceptionDTO.MarketExceptionDTO;
+import com.proyecto1.dto.reportsDTO.clientReportDTO.ClientWithMoreIncomeDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.ClientCrud;
 import com.proyecto1.repository.entity.Client;
+import com.proyecto1.utils.ClientReportsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -101,7 +103,13 @@ public class ClientService {
     }
 
 
+    /*Reports*/
 
+    public ArrayList<ClientWithMoreIncomeDTO> clientWithMostIncome(){
+        ArrayList<String> clients = clientCrud.clientsWithMostIncome();
+        ArrayList<ClientWithMoreIncomeDTO> clientsDTO = ClientReportsUtils.clientWithMoreIncome(clients);
+        return clientsDTO;
+    }
 
 
 

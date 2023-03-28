@@ -2,9 +2,12 @@ package com.proyecto1.service;
 
 import com.proyecto1.dto.branchDTO.response.BranchDTO;
 import com.proyecto1.dto.exceptionDTO.MarketExceptionDTO;
+import com.proyecto1.dto.reportsDTO.branchReportDTO.BranchWithMostIncomeDTO;
+import com.proyecto1.dto.reportsDTO.branchReportDTO.BranchWithMostSalesDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.BranchCrud;
 import com.proyecto1.repository.entity.Branch;
+import com.proyecto1.utils.BranchReportUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +54,19 @@ public class BranchService {
 
     public Boolean exist(int id){
         return branchCrud.existsById(id);
+    }
+
+    /* reports */
+    public ArrayList<BranchWithMostSalesDTO> branchWithMostSales(){
+        ArrayList<String> branchs = branchCrud.branchWithMostSales();
+        ArrayList<BranchWithMostSalesDTO> branchsDTO = BranchReportUtils.branchWithMostSales(branchs);
+        return branchsDTO;
+    }
+
+    public ArrayList<BranchWithMostIncomeDTO> branchWithMostIncome(){
+        ArrayList<String> branchs = branchCrud.branchWithMostIncome();
+        ArrayList<BranchWithMostIncomeDTO> branchsDTO = BranchReportUtils.branchWithMostIncome(branchs);
+        return branchsDTO;
     }
 
 }

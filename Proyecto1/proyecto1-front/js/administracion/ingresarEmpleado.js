@@ -77,7 +77,6 @@ form.addEventListener("submit",(e)=>{
             console.log(response);
             if(response.status == 201){
                 alert("Empleado Creado");
-                window.location.href="http://127.0.0.1:5500/vistas/administracion/index.html";
             }else if(response.status == 400){
                 alert(response.message);
             }
