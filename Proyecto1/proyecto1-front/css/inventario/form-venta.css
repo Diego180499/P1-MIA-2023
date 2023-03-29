@@ -135,3 +135,25 @@ select{
     margin-bottom: 3rem;
     font-size: 1.25rem;
 }
+
+.contenedor-finalizar{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.finalizar{
+    padding: 1rem 2rem;
+    width: 35%;
+    background-color: rgb(38, 174, 38);
+    border: none;
+    border: 3px solid darkgreen;
+    font-size: 1.5rem;
+    color: black;
+    transition: 0.3s;
+}
+
+.finalizar:hover{
+    background-color: darkgreen;
+    color: white;
+}

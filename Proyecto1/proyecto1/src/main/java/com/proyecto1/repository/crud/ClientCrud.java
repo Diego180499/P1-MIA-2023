@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public interface ClientCrud extends CrudRepository<Client,String> {
 
-    @Query(value = "SELECT * FROM reporte_clientes_mas_ganancia;",nativeQuery = true)
+    @Query(value = "SELECT * FROM reporte_clientes_mas_ganancia ORDER BY sum DESC;",nativeQuery = true)
     ArrayList<String> clientsWithMostIncome();
 
 }

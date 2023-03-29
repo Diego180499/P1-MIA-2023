@@ -4,6 +4,7 @@ const cantidad = document.querySelector("#cantidad");
 const linkRegresar = document.querySelector("#regresar");
 const form = document.querySelector("#form");
 const total = document.querySelector("#total");
+const finalizar = document.querySelector("#finalizar");
 //----OBTENER PARAMS
 const params = new URL(window.location.href).searchParams;
 const data = new URLSearchParams(params).entries();
@@ -73,6 +74,11 @@ function agregarDetalle(){
     return requestSaleDetail;
 }
 
+
+//**** BOTON DE FINALIZAR*/
+finalizar.addEventListener("click",()=>{
+    window.location.href="./index.html"+queryRegresar;
+});
 
 
 

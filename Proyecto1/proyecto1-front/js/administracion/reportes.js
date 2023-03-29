@@ -43,42 +43,42 @@ fetch(request)
 /*HACIENDO CLICK EN CADA REPORTE*/
 //REPORTE 1
 reporte1.addEventListener("click",()=>{
-    alert("hacia el reporte 1");
+    window.location.href="../administracion/reportes/productos/masVendidos.html"+queryParam;
 });
 
 
 //REPORTE 2
 reporte2.addEventListener("click",()=>{
-    alert("hacia el reporte 2");
+    window.location.href="../administracion/reportes/clientes/clienteMasIngreso.html"+queryParam;
 });
 
 
 //REPORTE 3
 reporte3.addEventListener("click",()=>{
-    alert("hacia el reporte 3");
+    window.location.href="../administracion/reportes/sucursales/masVentas.html"+queryParam;
 });
 
 //REPORTE 4
 reporte4.addEventListener("click",()=>{
-    alert("hacia el reporte 4");
+    window.location.href="../administracion/reportes/sucursales/masIngresos.html"+queryParam;
 });
 
 
 //REPORTE 5
 reporte5.addEventListener("click",()=>{
-    alert("hacia el reporte 5");
+    window.location.href="../administracion/reportes/empleados/masVentas.html"+queryParam;
 });
 
 
 //REPORTE 6
 reporte6.addEventListener("click",()=>{
-    alert("hacia el reporte 6");
+    window.location.href="../administracion/reportes/empleados/masIngresos.html"+queryParam;
 });
 
 
 //REPORTE 7
 reporte7.addEventListener("click",()=>{
-    alert("hacia el reporte 7");
+    window.location.href="../administracion/reportes/productos/masIngresos.html"+queryParam;
 });
 
 
@@ -87,7 +87,7 @@ reporte8.addEventListener("click",()=>{
     if(sucursales1.value == 0){
         alert("debes elegir una sucursal");
     }else{
-        alert("hacia el reporte 8");
+        window.location.href="../administracion/reportes/productos/masVendidosPS.html"+queryParam+"&sucursal="+sucursales1.value;
     }
 });
 
@@ -97,6 +97,6 @@ reporte9.addEventListener("click",()=>{
     if(sucursales1.value == 0){
         alert("debes elegir una sucursal");
     }else{
-        alert("hacia el reporte 9");
+        window.location.href="../administracion/reportes/productos/masIngresosPS.html"+queryParam+"&sucursal="+sucursales1.value;
     }
 });

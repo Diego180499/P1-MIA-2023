@@ -1,0 +1,37 @@
+const linkRegresar = document.querySelector("#regresar");
+const tabla = document.querySelector("#table-products");
+//------------CAPTURAMOS EL QUERY PARAM
+console.log(window.location.href);
+const params = new URL(window.location.href).searchParams;
+const data = new URLSearchParams(params).entries();
+const arrayData = Array.from(data);
+console.log(arrayData);
+const dpiEmpleado = arrayData[0][1];
+const sucursal = arrayData[1][1];
+//----------------------CONFIGURAR LINK
+const queryParam = "?dpi="+dpiEmpleado+"&sucursal="+sucursal;
+linkRegresar.href="http://127.0.0.1:5500/vistas/administracion/reportes.html"+queryParam;
+//-----------------------------------------------------------------------------------------
+//*****************************************************************************************
+//llenado de tabla
+let contenidoTabla = "<tr><th>Sucursal</th><th>Ingresos</th></tr>";
+sucursalesMasIngresos();
+
+
+/* CONSULTAS A LA API REST */
+function sucursalesMasIngresos(){
+    const request = new Request("http://localhost:8080/reports/branchWithMostIncome");
+    fetch(request)
+        .then(res => res.json())
+        .then(response => {
+            console.log(response);
+            llenarTabla(response);
+    })
+}
+
+function llenarTabla(data){
+    for(let i=0; i< data.length; i++){
+        contenidoTabla += "<tr><td>"+data[i].branchName+"</td><td>"+data[i].income+"</td></tr>";
+    }
+    tabla.innerHTML = contenidoTabla;
+}

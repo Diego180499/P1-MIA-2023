@@ -3,12 +3,15 @@ package com.proyecto1.controllers;
 import com.proyecto1.dto.userDTO.request.NewUserDTO;
 import com.proyecto1.dto.userDTO.response.UserCreatedDTO;
 import com.proyecto1.dto.userDTO.response.UserDTO;
+import com.proyecto1.dto.userDTO.response.UserReportDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/user")
@@ -38,5 +41,10 @@ public class UserController {
         }
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    @GetMapping("/getUsers")
+    public ResponseEntity<ArrayList<UserReportDTO>> getUsers(){
+       return new ResponseEntity<>(userService.getUsers(),HttpStatus.OK);
+    }
 
 }

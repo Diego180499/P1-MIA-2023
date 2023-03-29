@@ -4,6 +4,7 @@ const linkEmpleado = document.querySelector("#empleado");
 const linkEmpleados = document.querySelector("#empleados");
 const linkUsuario = document.querySelector("#usuario");
 const linkReportes = document.querySelector("#reportes");
+const linkUsuarios = document.querySelector("#usuarios");
 //------------CAPTURAMOS EL QUERY PARAM
 console.log(window.location.href);
 const params = new URL(window.location.href).searchParams;
@@ -32,3 +33,4 @@ linkEmpleado.href="http://127.0.0.1:5500/vistas/administracion/ingresar-empleado
 linkEmpleados.href="http://127.0.0.1:5500/vistas/administracion/empleados.html"+queryParam;
 linkUsuario.href="http://127.0.0.1:5500/vistas/administracion/asignar-usuario.html"+queryParam;
 linkReportes.href="http://127.0.0.1:5500/vistas/administracion/reportes.html"+queryParam;
+linkUsuarios.href = "http://127.0.0.1:5500/vistas/administracion/usuarios.html"+queryParam;

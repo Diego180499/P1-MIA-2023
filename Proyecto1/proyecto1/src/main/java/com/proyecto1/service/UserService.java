@@ -5,11 +5,15 @@ import com.proyecto1.dto.employeeDTO.response.EmployeeDTO;
 import com.proyecto1.dto.userDTO.request.NewUserDTO;
 import com.proyecto1.dto.userDTO.response.UserCreatedDTO;
 import com.proyecto1.dto.userDTO.response.UserDTO;
+import com.proyecto1.dto.userDTO.response.UserReportDTO;
 import com.proyecto1.exception.MarketException;
 import com.proyecto1.repository.crud.UserCrud;
 import com.proyecto1.repository.entity.User;
+import com.proyecto1.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class UserService {
@@ -56,5 +60,14 @@ public class UserService {
             EmployeeDTO employeeDTO = employeeService.getByDpi(id);
             userDTO.setEmployee(employeeDTO);
             return userDTO;
+    }
+
+
+    /*Reports*/
+
+    public ArrayList<UserReportDTO> getUsers(){
+        ArrayList<String> users = userCrud.getUsers();
+        ArrayList<UserReportDTO> usersDTO = UserUtils.getUsers(users);
+        return usersDTO;
     }
 }

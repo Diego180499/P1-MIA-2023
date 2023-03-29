@@ -103,7 +103,6 @@ form.addEventListener("submit",(e)=>{
         .then(response => {
             if(response.status == 201){
                 alert("Empleado modificado");
-                window.location.href = "../../vistas/administracion/empleados.html";
             }
             console.log(response);
         });

@@ -120,12 +120,24 @@ ORDER BY DESC;
 
 
 /*REPORTE DE LOS USUARIOS CREADOS, UNIDOS AL EMPLEADO*/
-SELECT empleado.nombre, empleado.apellido, sucursal.nombre, rol.cargo, usuario.usuario, usuario.password 
-FROM usuario, empleado
+
+CREATE VIEW vista_usuarios as SELECT usuario.usuario, usuario.password, empleado.nombre, empleado.apellido, empleado.sucursal, empleado.rol
+ FROM usuario
 INNER JOIN empleado
-ON usuario.usuario = empleado.dpi
+ON usuario.usuario = empleado.dpi;
+/*--*/
+CREATE VIEW reporte_usuarios as
+SELECT vista_usuarios.nombre,
+vista_usuarios.apellido, 
+vista_usuarios.usuario,
+vista_usuarios.password, 
+sucursal.nombre as sucursal,
+rol_empleado.cargo
+FROM vista_usuarios
 INNER JOIN sucursal
-ON empleado.sucursal = sucursal.id_sucursal
+ON vista_usuarios.sucursal = sucursal.id_sucursal
 INNER JOIN rol_empleado
-ON empleado.rol = rol_empleado.id_rol;
-/*Queda pendiente arreglar este reporte de usuarios*/
+ON vista_usuarios.rol = rol_empleado.id_rol;
+
+/*reporte oficial*/
+SELECT * FROM reporte_usuarios;

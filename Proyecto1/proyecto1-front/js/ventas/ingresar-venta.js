@@ -26,11 +26,16 @@ form.addEventListener("submit",(e)=>{
     fetch(req)
         .then(res => res.json())
         .then(response =>{
-            console.log(response);
-            alert(response.message);
-            const queryDetalle = queryRegresar+"&venta="+response.sale.saleId;
-            console.log(queryDetalle);
-            window.location.href="./detalle-venta.html"+queryDetalle;
+            if(response.status == 404){
+                alert(response.message);
+                window.location.href="http://127.0.0.1:5500/vistas/ventas/ingresarCliente.html"+queryRegresar;
+            }else{
+                console.log(response);
+                alert(response.message);
+                const queryDetalle = queryRegresar+"&venta="+response.sale.saleId;
+                console.log(queryDetalle);
+                window.location.href="./detalle-venta.html"+queryDetalle;
+            }
         })
 });
 

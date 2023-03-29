@@ -12,7 +12,7 @@ public interface EmployeeCrud extends CrudRepository<Employee,String> {
     ArrayList<String> employeeWithMostSales();
 
 
-    @Query(value = "SELECT * FROM reporte_empleados_mas_ingresos;",nativeQuery = true)
+    @Query(value = "SELECT * FROM reporte_empleados_mas_ingresos ORDER BY sum DESC;",nativeQuery = true)
     ArrayList<String> employeeWithMostIncome();
 
 }
