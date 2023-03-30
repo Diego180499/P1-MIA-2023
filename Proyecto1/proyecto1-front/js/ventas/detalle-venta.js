@@ -13,6 +13,7 @@ console.log(arrayData);
 const dpi = arrayData[0][1];
 const idSucursal = arrayData[1][1];
 const idVenta = arrayData[2][1];
+let totalVenta = 0;
 //-----LLENAR VALOR DE VENTA
 venta.value = idVenta;
 //-------------configurar link
@@ -47,7 +48,8 @@ form.addEventListener("submit",(e)=>{
         .then(response =>{
             console.log(response);
             alert(response.message);
-            total.innerHTML="Q "+response.sale.total+".00";
+            total.innerHTML="Q "+response.sale.sale.total+".00";
+            totalVenta = response.sale.sale.total;
         });
 });
 
@@ -77,6 +79,7 @@ function agregarDetalle(){
 
 //**** BOTON DE FINALIZAR*/
 finalizar.addEventListener("click",()=>{
+    alert("El total de la venta es de Q"+totalVenta+".00");
     window.location.href="./index.html"+queryRegresar;
 });
 
