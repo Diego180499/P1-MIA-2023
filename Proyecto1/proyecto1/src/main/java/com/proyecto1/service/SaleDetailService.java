@@ -81,12 +81,16 @@ public class SaleDetailService {
 
     public Integer addDiscount(SaleDetail saleDetail, int amount){
         int totalWithDiscount = 0;
+
         if(amount >= 1000 &&  amount < 5000){
             totalWithDiscount = (int) (saleDetail.getTotal()*0.98);
+
         }else if(amount >= 5000 &&  amount < 10000){
             totalWithDiscount = (int) (saleDetail.getTotal()*0.95);
+
         }else if(amount >= 10000){
             totalWithDiscount = (int) (saleDetail.getTotal()*0.90);
+
         }
 
         return totalWithDiscount;
