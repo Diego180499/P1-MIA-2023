@@ -1,0 +1,1 @@
+SELECT total FROM venta WHERE cliente = '5478-k' ORDER BY id_venta DESC LIMIT 2;

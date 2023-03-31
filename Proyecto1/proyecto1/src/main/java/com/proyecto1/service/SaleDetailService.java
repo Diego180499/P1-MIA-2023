@@ -45,11 +45,6 @@ public class SaleDetailService {
         saleDetail.setProduct(newSaleDetail.getProduct());
         saleDetail.setAmount(newSaleDetail.getAmount());
         saleDetail.setTotal(productPrice*amount);
-        saleDetail =saleDetailCrud.save(saleDetail);
-
-        //update sale total
-        Integer actualTotal = saleService.getSaleTotal(saleDetail.getSale());
-        saleService.modifyTotal(saleDetail.getSale(), saleDetail.getTotal()+actualTotal);
 
         //reduce stock product branch
         String productBranchId = saleDetail.getProduct()+"-"+branchId;
@@ -59,17 +54,43 @@ public class SaleDetailService {
         branchService.reduceStock(branchId,saleDetail.getAmount());
 
         SaleDTO saleDTO = saleService.getById(saleDetail.getSale());
+
+        //update sale total
+        String mensaje = "Producto agregado a la venta";
+        int lastSaleValue = saleService.getLastSaleCustomer(saleDTO.getClient().getNit());
+        Integer actualTotal = saleService.getSaleTotal(saleDetail.getSale());
+        //verificamos precio anterior para hacer descuento
+        if(lastSaleValue >= 1000){
+            int newTotal = addDiscount(saleDetail, lastSaleValue);
+            saleService.modifyTotal(saleDetail.getSale(), newTotal+actualTotal);
+            saleDetail.setTotal(newTotal);
+            mensaje = "Producto agregado a la venta con descuento, Q"+newTotal;
+        }
+        saleDetail =saleDetailCrud.save(saleDetail);
+        saleService.modifyTotal(saleDetail.getSale(), saleDetail.getTotal()+actualTotal);
         ProductDTO productDTO = productService.getById(saleDetail.getProduct());
+        saleDTO = saleService.getById(saleDetail.getSale());
         SaleDetailDTO saleDetailDTO = SaleDetailUtils.SaleDetailToSaleDetailDTO(saleDetail,saleDTO,productDTO);
 
         SaleDetailCreatedDTO saleDetailCreatedDTO = new SaleDetailCreatedDTO();
         saleDetailCreatedDTO.setSale(saleDetailDTO);
-        saleDetailCreatedDTO.setMessage("Producto agregado a la venta");
+        saleDetailCreatedDTO.setMessage(mensaje);
         saleDetailCreatedDTO.setStatus(201);
         return saleDetailCreatedDTO;
     }
 
+    public Integer addDiscount(SaleDetail saleDetail, int amount){
+        int totalWithDiscount = 0;
+        if(amount >= 1000 &&  amount < 5000){
+            totalWithDiscount = (int) (saleDetail.getTotal()*0.98);
+        }else if(amount >= 5000 &&  amount < 10000){
+            totalWithDiscount = (int) (saleDetail.getTotal()*0.95);
+        }else if(amount >= 10000){
+            totalWithDiscount = (int) (saleDetail.getTotal()*0.90);
+        }
 
+        return totalWithDiscount;
+    }
 
     public ArrayList<SaleDetailDTO> getAll() throws MarketException {
         ArrayList<SaleDetail> sales = (ArrayList<SaleDetail>) saleDetailCrud.findAll();

@@ -122,4 +122,19 @@ public class SaleService {
         }
 
     }
+
+
+    public Integer getLastSaleCustomer(String nit){
+        try {
+            if(nit.equals("c/f")){
+                return 0;
+            }
+            ArrayList<String> total = saleCrud.getLastSale(nit);
+            String data [] = total.get(1).split(",");
+            int valorTotal = Integer.parseInt(data[0]);
+            return valorTotal;
+        }catch (IndexOutOfBoundsException ex){
+            return 0;
+        }
+    }
 }
